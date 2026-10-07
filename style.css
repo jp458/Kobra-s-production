@@ -180,6 +180,8 @@ body::after{content:"";position:fixed;inset:0;z-index:80;pointer-events:none;opa
 .chip span{display:block;padding:10px 16px;border:1px solid var(--line-strong);font-size:.92rem;color:var(--muted);transition:all .2s}
 .chip input:hover+span{color:var(--text);border-color:var(--text)}
 .chip input:checked+span{background:var(--accent);border-color:var(--accent);color:var(--ink);font-weight:500}
+.chip input:disabled+span{opacity:.55;cursor:default}
+.chip-all span{border-style:dashed}
 .chip input:focus-visible+span{outline:2px solid var(--accent);outline-offset:3px}
 .consent{display:flex;gap:12px;align-items:flex-start;font-size:.88rem;color:var(--muted);margin:6px 0 30px}
 .consent input{margin-top:4px;accent-color:var(--accent)}

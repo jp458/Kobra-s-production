@@ -68,9 +68,14 @@
   }).join('')+'<p class="note demo-empty" hidden>'+DEMO_SOON+'</p>';
   $$('.thumb').forEach(function(img){img.addEventListener('error',function(){img.remove()})});
 
-  var TYPES=['Clip musical','Court-métrage','Bande démo','Montage vidéo','Reel / contenu court'];
+  var TYPES=['Clip musical','Court-métrage','Bande démo','Montage vidéo','Reel / contenu court','Autres'];
   $('#types').innerHTML=TYPES.map(function(t){return '<label class="chip"><input type="radio" name="type" value="'+esc(t)+'"><span>'+esc(t)+'</span></label>'}).join('');
-  $('#etapes').innerHTML=STEPS.map(function(s){return '<label class="chip"><input type="checkbox" name="etape" value="'+s.v+'"><span>'+s.v+'</span></label>'}).join('');
+  $('#etapes').innerHTML=STEPS.map(function(s){return '<label class="chip"><input type="checkbox" name="etape" value="'+s.v+'"><span>'+s.v+'</span></label>'}).join('')+
+    '<label class="chip chip-all"><input type="checkbox" id="etape-all"><span>A à Z (toutes les étapes)</span></label>';
+  $('#etape-all').addEventListener('change',function(){
+    var all=this.checked;
+    $$('input[name="etape"]').forEach(function(c){c.checked=all; c.disabled=all;});
+  });
 
   /* ——— Navigation entre onglets ——— */
   var current='accueil', nav=$('#nav');
