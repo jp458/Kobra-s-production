@@ -25,6 +25,7 @@
   </defs>
 </svg>
 
+<div class="scrollbar" id="scrollbar" aria-hidden="true"></div>
 <header class="nav" id="nav">
   <div class="wrap nav-in">
     <a class="brand" href="#/" data-route="accueil" aria-label="Kobra’s Productions, accueil">
@@ -73,7 +74,7 @@
 
   <section class="sec" aria-labelledby="h-real">
     <div class="wrap sec-head">
-      <h2 id="h-real">Nos réalisations</h2>
+      <h2 id="h-real" class="reveal">Nos réalisations</h2>
       <a class="textlink" href="#/realisations" data-route="realisations">Tout voir</a>
     </div>
     <div class="strips" id="strips"></div>
@@ -81,7 +82,7 @@
 
   <section class="sec" aria-labelledby="h-serv" style="padding-top:0">
     <div class="wrap sec-head">
-      <h2 id="h-serv">Nos services</h2>
+      <h2 id="h-serv" class="reveal">Nos services</h2>
       <a class="textlink" href="#/services" data-route="services">Le détail</a>
     </div>
     <div class="film"><div class="wrap"><div class="film-row" data-steps></div></div></div>
@@ -93,7 +94,7 @@
 
   <section class="sec" aria-labelledby="h-tar" style="padding-top:0">
     <div class="wrap">
-      <div class="sec-head"><h2 id="h-tar">Nos tarifs</h2></div>
+      <div class="sec-head"><h2 id="h-tar" class="reveal">Nos tarifs</h2></div>
       <div class="prices" data-prices></div>
       <blockquote class="quote">
         <strong>Votre projet. Vos besoins. Votre budget.</strong>
@@ -105,14 +106,14 @@
 
   <section class="sec" aria-labelledby="h-uni" style="padding-top:0">
     <div class="wrap">
-      <div class="sec-head"><h2 id="h-uni">Notre univers</h2><a class="textlink" href="#/univers" data-route="univers">Découvrir</a></div>
+      <div class="sec-head"><h2 id="h-uni" class="reveal">Notre univers</h2><a class="textlink" href="#/univers" data-route="univers">Découvrir</a></div>
       <p style="max-width:60ch;font-size:1.1rem;color:var(--muted)">KOBRAS PRODUCTIONS est un univers audiovisuel à la croisée de l’image, du récit et de la création — pensé sur mesure pour les artistes, créatifs, marques et projets culturels.</p>
     </div>
   </section>
 
   <section class="final" aria-labelledby="h-final">
     <div class="wrap">
-      <h2 id="h-final">Un projet<br>en tête ?</h2>
+      <h2 id="h-final" class="reveal">Un projet<br>en tête ?</h2>
       <a class="btn btn-solid" href="#/devis" data-route="devis">Demander un devis</a>
     </div>
   </section>
@@ -121,7 +122,7 @@
 <!-- ═════════ RÉALISATIONS ═════════ -->
 <div class="page" data-page="realisations" hidden>
   <header class="phead"><div class="wrap">
-    <h1>Nos réalisations</h1>
+    <h1><span class="ln"><span>Nos réalisations</span></span></h1>
     <p>Clips musicaux, courts-métrages et bandes démo. Ouvrez un projet pour le voir en plein écran.</p>
   </div></header>
   <section class="wrap" style="padding-bottom:clamp(64px,9vw,140px)">
@@ -139,7 +140,7 @@
 <!-- ═════════ SERVICES ═════════ -->
 <div class="page" data-page="services" hidden>
   <header class="phead"><div class="wrap">
-    <h1>Écrire, concevoir, tourner, monter.</h1>
+    <h1><span class="ln"><span>Écrire, concevoir, tourner, monter.</span></span></h1>
     <p>De l’idée à l’image, en quatre étapes. Vous prenez tout, ou seulement ce dont vous avez besoin.</p>
   </div></header>
   <section style="padding-bottom:clamp(64px,9vw,140px)">
@@ -154,7 +155,7 @@
 <!-- ═════════ TARIFS ═════════ -->
 <div class="page" data-page="tarifs" hidden>
   <header class="phead"><div class="wrap">
-    <h1>Nos tarifs</h1>
+    <h1><span class="ln"><span>Nos tarifs</span></span></h1>
     <p>Une base par prestation. Le prix final dépend des étapes que vous choisissez.</p>
   </div></header>
   <section class="wrap" style="padding-bottom:clamp(64px,9vw,140px)">
@@ -170,7 +171,7 @@
 
 <!-- ═════════ UNIVERS ═════════ -->
 <div class="page" data-page="univers" hidden>
-  <header class="phead"><div class="wrap"><h1>Notre univers</h1></div></header>
+  <header class="phead"><div class="wrap"><h1><span class="ln"><span>Notre univers</span></span></h1></div></header>
   <section class="wrap" style="padding-bottom:clamp(64px,9vw,140px)">
     <div class="univers">
       <div>
@@ -190,7 +191,7 @@
 <!-- ═════════ DEVIS ═════════ -->
 <div class="page" data-page="devis" hidden>
   <header class="phead"><div class="wrap">
-    <h1>Un projet en tête ?</h1>
+    <h1><span class="ln"><span>Un projet en tête ?</span></span></h1>
     <p>Décrivez votre idée et cochez les étapes qu’il vous faut. Vous recevez un devis sur mesure.</p>
   </div></header>
   <section class="wrap devis">
