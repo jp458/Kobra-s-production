@@ -50,3 +50,16 @@ n'importe quel hébergeur statique ; ce dépôt est prêt pour GitHub + Vercel.
 - Couleur d'accent à valider avec la cliente (violet par défaut, sélecteur de test
   visible en bas à gauche du site — à retirer une fois le choix fait)
 - Formulaire de devis à brancher sur un vrai envoi (mail ou service tiers)
+
+## Ajouter un teaser
+
+Ouvrir `app.js`, repérer la liste `TEASERS` et ajouter une ligne :
+
+```
+{t:'Titre du projet', m:'Clip musical', when:'12 décembre', h:265, url:'https://youtu.be/XXXXXXXXXXX', id:'XXXXXXXXXXX'},
+```
+
+- `when` : date de sortie ou « Bientôt »
+- `url` : lien du teaser (YouTube, Instagram…), ou `null` s'il n'est pas encore prêt
+- `id` : identifiant YouTube, pour afficher la vraie miniature (`null` pour Instagram ou sans lien)
+- Les trois premiers teasers apparaissent aussi sur l'accueil.

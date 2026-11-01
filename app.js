@@ -1,5 +1,6 @@
 (function(){
   var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ——— Contenus (provisoires) ——— */
   var STEPS=[
@@ -32,7 +33,7 @@
      url:null, id:null}
   ];
   var DEMO_SOON='Les bandes démo arrivent bientôt : les montages sont en cours.';
-  var TITLES={accueil:'Kobra’s Productions — Maquette',realisations:'Nos réalisations — Kobra’s Productions',services:'Nos services — Kobra’s Productions',tarifs:'Nos tarifs — Kobra’s Productions',univers:'Notre univers — Kobra’s Productions',devis:'Demander un devis — Kobra’s Productions'};
+  var TITLES={accueil:'Kobra’s Productions — Maquette',realisations:'Nos réalisations — Kobra’s Productions',teasers:'Teasers — Kobra’s Productions',services:'Nos services — Kobra’s Productions',tarifs:'Nos tarifs — Kobra’s Productions',univers:'Notre univers — Kobra’s Productions',devis:'Demander un devis — Kobra’s Productions'};
   var ACCENTS=[['Ultraviolet','#8b6dff'],['Braise','#ff5a3c'],['Or','#e2b04c'],['Venin','#a8f03a']];
 
   function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
@@ -40,21 +41,21 @@
 
   /* ——— Rendu ——— */
   $('#strips').innerHTML=STRIPS.map(function(s){
-    return '<a class="strip" href="#/realisations" data-route="realisations" data-filter="'+s.k+'">'+frame(s.h)+
+    return '<a class="strip reveal" href="#/realisations" data-route="realisations" data-filter="'+s.k+'">'+frame(s.h)+
       '<div class="wrap in"><div><h3>'+esc(s.t)+'</h3><p>'+esc(s.s)+'</p></div><span class="go" aria-hidden="true">↗</span></div></a>';
   }).join('');
 
   $$('[data-steps]').forEach(function(el){
     var detail=el.getAttribute('data-steps')==='detail';
     el.innerHTML=STEPS.map(function(s,i){
-      return '<article class="step" style="--h:'+s.h+'"><span class="n">Étape '+(i+1)+' sur 4</span><div><h3>'+s.v+'</h3><p>'+esc(s.t)+'</p>'+
+      return '<article class="step reveal" style="--h:'+s.h+'"><span class="n">Étape '+(i+1)+' sur 4</span><div><h3>'+s.v+'</h3><p>'+esc(s.t)+'</p>'+
         (detail?'<ul>'+s.d.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>':'')+'</div></article>';
     }).join('');
   });
 
   $$('[data-prices]').forEach(function(el){
     el.innerHTML=PRICES.map(function(p){
-      return '<div class="price"><h3>'+esc(p.n)+'</h3><div class="amt">'+p.p+(p.x?'<small>'+p.x+'</small>':'')+'</div>'+
+      return '<div class="price reveal"><h3>'+esc(p.n)+'</h3><div class="amt">'+p.p+(p.x?'<small>'+p.x+'</small>':'')+'</div>'+
         '<a class="textlink" href="#/devis" data-route="devis" data-project="'+esc(p.n)+'">Demander ce devis</a></div>';
     }).join('');
   });
@@ -62,10 +63,28 @@
   $('#works').innerHTML=WORKS.map(function(w,i){
     var tag=w.url?'a':'div', open=w.url?('href="'+esc(w.url)+'" target="_blank" rel="noopener"'):'aria-disabled="true"';
     var thumb=w.id?'<img class="thumb" src="https://i.ytimg.com/vi/'+w.id+'/hqdefault.jpg" alt="Miniature : '+esc(w.t)+'" loading="lazy" decoding="async">':'';
-    return '<'+tag+' class="work" '+open+' data-cat="'+w.k+'">'+
+    return '<'+tag+' class="work reveal" '+open+' data-cat="'+w.k+'">'+
       frame(w.h, thumb+'<span class="ph">'+(w.url?'Voir sur YouTube':'Lien à venir')+'</span><span class="play"></span>')+
       '<h3>'+esc(w.t)+'</h3><p>'+esc(w.m)+'</p><p class="role">'+esc(w.role||'')+'</p></'+tag+'>';
   }).join('')+'<p class="note demo-empty" hidden>'+DEMO_SOON+'</p>';
+  /* TEASERS : pour en ajouter un, copier une ligne et la remplir.
+     t = titre, m = type de projet, when = date de sortie ou « Bientôt », h = teinte du cadre (0 à 360),
+     url = lien du teaser (YouTube, Instagram…) ou null, id = identifiant YouTube pour la miniature ou null. */
+  var TEASERS=[
+    {t:'Titre du projet',m:'Clip musical',when:'Bientôt',h:265,url:null,id:null},
+    {t:'Titre du projet',m:'Court-métrage',when:'Bientôt',h:20,url:null,id:null},
+    {t:'Titre du projet',m:'Projet à préciser',when:'Bientôt',h:200,url:null,id:null}
+  ];
+  function teaserCard(w){
+    var tag=w.url?'a':'div', open=w.url?('href="'+esc(w.url)+'" target="_blank" rel="noopener"'):'aria-disabled="true"';
+    var thumb=w.id?'<img class="thumb" src="https://i.ytimg.com/vi/'+w.id+'/hqdefault.jpg" alt="Miniature : '+esc(w.t)+'" loading="lazy" decoding="async">':'';
+    return '<'+tag+' class="work reveal" '+open+'>'+
+      frame(w.h, thumb+'<span class="badge">'+esc(w.when||'Bientôt')+'</span><span class="ph">'+(w.url?'Voir le teaser':'Teaser à venir')+'</span><span class="play"></span>')+
+      '<h3>'+esc(w.t)+'</h3><p>'+esc(w.m)+'</p></'+tag+'>';
+  }
+  var NO_TEASER='<p class="note">Les premiers teasers arrivent bientôt.</p>';
+  $('#teasers').innerHTML=TEASERS.map(teaserCard).join('')||NO_TEASER;
+  $('#teasers-home').innerHTML=TEASERS.slice(0,3).map(teaserCard).join('')||NO_TEASER;
   $$('.thumb').forEach(function(img){img.addEventListener('error',function(){img.remove()})});
 
   var TYPES=['Clip musical','Court-métrage','Bande démo','Montage vidéo','Reel / contenu court','Autres'];
@@ -103,9 +122,22 @@
     current=name; document.title=TITLES[name];
     if(name==='realisations') setFilter(o.filter||'all');
     if(name==='devis' && o.project) preselect(o.project);
-    closeMenu(); window.scrollTo(0,0);
+    closeMenu(); window.scrollTo(0,0); requestAnimationFrame(updateProgress);
+    if(name==='accueil'){ startHeroIdle(); } else { pauseHeroIdle(0); }
     try{ history.replaceState(null,'','#/'+(name==='accueil'?'':name)); }catch(e){}
   }
+  var scrollbar=$('#scrollbar');
+  function updateProgress(){
+    if(!scrollbar) return;
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    var pct=h>0?Math.min(100,Math.max(0,(window.scrollY/h)*100)):0;
+    scrollbar.style.width=pct+'%';
+  }
+  var progressTicking=false;
+  window.addEventListener('scroll',function(){
+    if(!progressTicking){ progressTicking=true; requestAnimationFrame(function(){updateProgress(); progressTicking=false;}); }
+  },{passive:true});
+
   document.addEventListener('click',function(e){
     var a=e.target.closest('[data-route]'); if(!a) return;
     e.preventDefault(); go(a.getAttribute('data-route'),{filter:a.getAttribute('data-filter'),project:a.getAttribute('data-project')});
@@ -150,23 +182,40 @@
   });
   $('#mock-x').addEventListener('click',function(){$('#mock').hidden=true});
 
-  /* ——— Hero : la lumière suit le pointeur ——— */
-  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* ——— Hero : la lumière suit le pointeur, et dérive doucement au repos ——— */
   var hero=$('#hero'), glow=$('#glow'), cobra=$('#cobra'), beam=$('#beam');
   var VB={x:106,y:99,w:2222,h:3306};
   function light(px,py){
-    var hr=hero.getBoundingClientRect(), cr=cobra.getBoundingClientRect();
+    var hr=hero.getBoundingClientRect(), cr=cobra.getBoundingClientRect(); if(!cr.width||!cr.height) return;
     glow.style.setProperty('--mx',(px-hr.left)+'px'); glow.style.setProperty('--my',(py-hr.top)+'px');
     var vx=VB.x+(px-cr.left)/cr.width*VB.w, vy=VB.y+(py-cr.top)/cr.height*VB.h;
     beam.setAttribute('cx',vx); beam.setAttribute('cy',vy);
   }
-  function restLight(){var cr=cobra.getBoundingClientRect(); light(cr.left+cr.width*.45,cr.top+cr.height*.22)}
+  function restLight(){var cr=cobra.getBoundingClientRect(); if(!cr.width) return; light(cr.left+cr.width*.45,cr.top+cr.height*.22)}
+  var heroIdleRAF=null, heroIdleTimer=null;
+  function heroIdleTick(t){
+    var pageEl=hero.closest('.page');
+    if(!pageEl||pageEl.hidden){heroIdleRAF=null; return;}
+    var cr=cobra.getBoundingClientRect();
+    if(cr.width){
+      var dx=Math.sin(t/4000)*cr.width*.05, dy=Math.cos(t/5200)*cr.height*.04;
+      light(cr.left+cr.width*.45+dx, cr.top+cr.height*.22+dy);
+    }
+    heroIdleRAF=requestAnimationFrame(heroIdleTick);
+  }
+  function startHeroIdle(){ if(!reduce && !heroIdleRAF) heroIdleRAF=requestAnimationFrame(heroIdleTick); }
+  function pauseHeroIdle(resumeAfter){
+    if(heroIdleRAF){cancelAnimationFrame(heroIdleRAF); heroIdleRAF=null;}
+    clearTimeout(heroIdleTimer);
+    if(resumeAfter) heroIdleTimer=setTimeout(startHeroIdle,resumeAfter);
+  }
   if(!reduce){
-    hero.addEventListener('pointermove',function(e){light(e.clientX,e.clientY)});
-    hero.addEventListener('pointerleave',restLight);
+    hero.addEventListener('pointermove',function(e){pauseHeroIdle(1800); light(e.clientX,e.clientY);});
+    hero.addEventListener('pointerleave',function(){pauseHeroIdle(0); startHeroIdle();});
   }
   window.addEventListener('resize',restLight);
   restLight();
+  startHeroIdle();
 
   /* timecode */
   var tc=$('#tc'), t0=performance.now();
@@ -177,6 +226,16 @@
       tc.textContent=[h,m,s,f].map(function(n){return ('0'+n).slice(-2)}).join(':');
     },40);
   }
+
+  function initReveals(){
+    var els=$$('.reveal');
+    if(reduce||!window.IntersectionObserver){ els.forEach(function(el){el.classList.add('in')}); return; }
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+    },{rootMargin:'0px 0px -8% 0px',threshold:0.12});
+    els.forEach(function(el){ io.observe(el); });
+  }
+  initReveals();
 
   /* page de départ */
   var start='accueil';
