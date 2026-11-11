@@ -38,18 +38,16 @@ n'importe quel hébergeur statique ; ce dépôt est prêt pour GitHub + Vercel.
 - `Strict-Transport-Security` : force le HTTPS pour toutes les visites suivantes.
 - `Referrer-Policy` et `Permissions-Policy` restrictives, aucun tiers ne peut
   activer caméra, micro ou géolocalisation depuis cette page.
-- Formulaire de devis encore **simulé** (aucune donnée envoyée nulle part) :
-  `form-action 'none'` dans la CSP le rappelle. Le jour où il enverra un vrai
-  mail ou passera par un service (Formspree, etc.), il faudra autoriser cette
-  destination précise dans `vercel.json`.
+- Formulaire de devis : l'envoi passe par Web3Forms, seule destination externe
+  autorisée pour les requêtes (`connect-src` dans `vercel.json`). La clé Web3Forms est
+  visible dans le code par conception : un champ piège limite les robots, et on
+  pourra ajouter un captcha si du spam arrive.
 
 ## Reste à faire avant mise en ligne définitive
 
 - Tarifs réels (actuellement `XX €`)
-- Lien de « I AM » et bandes démo, dès qu'elles seront montées
-- Couleur d'accent à valider avec la cliente (violet par défaut, sélecteur de test
-  visible en bas à gauche du site — à retirer une fois le choix fait)
-- Formulaire de devis à brancher sur un vrai envoi (mail ou service tiers)
+- Bandes démo, dès qu'elles seront montées
+- Activer l'envoi du formulaire (voir ci-dessous)
 
 ## Ajouter un teaser
 
@@ -63,3 +61,16 @@ Ouvrir `app.js`, repérer la liste `TEASERS` et ajouter une ligne :
 - `url` : lien du teaser (YouTube, Instagram…), ou `null` s'il n'est pas encore prêt
 - `id` : identifiant YouTube, pour afficher la vraie miniature (`null` pour Instagram ou sans lien)
 - Les trois premiers teasers apparaissent aussi sur l'accueil.
+
+## Activer l'envoi du formulaire de devis
+
+1. Aller sur [web3forms.com](https://web3forms.com), saisir `kobrasprod@gmail.com` :
+   une clé d'accès est envoyée à cette adresse (la boîte de la cliente doit donc ouvrir
+   ce mail, ou transmettre la clé).
+2. Dans `app.js`, remplacer `COLLER_LA_CLE_ICI` par cette clé (une seule occurrence à
+   modifier : la ligne `var WEB3FORMS_KEY=...`).
+3. Commit et push, puis envoyer une demande de test depuis le site en ligne et vérifier
+   qu'elle arrive bien sur `kobrasprod@gmail.com` (regarder aussi les spams).
+
+Tant que la clé n'est pas renseignée, le formulaire affiche un message invitant à écrire
+directement à l'adresse mail, et n'envoie rien.

@@ -30,11 +30,10 @@
      url:'https://youtu.be/EmnK2zwiFjc?si=bE6bV2cE2kif-7-s', id:'EmnK2zwiFjc'},
     {k:'court',t:'« I AM »',m:'Court-métrage',h:150,
      role:'Production de A à Z — écriture scénario, tournage, cadrage, montage.',
-     url:null, id:null}
+     url:'https://youtu.be/5sUIpbPgv5M?si=SzDUcV2doapvWPv4', id:'5sUIpbPgv5M'}
   ];
   var DEMO_SOON='Les bandes démo arrivent bientôt : les montages sont en cours.';
-  var TITLES={accueil:'Kobra’s Productions — Maquette',realisations:'Nos réalisations — Kobra’s Productions',teasers:'Teasers — Kobra’s Productions',services:'Nos services — Kobra’s Productions',tarifs:'Nos tarifs — Kobra’s Productions',univers:'Notre univers — Kobra’s Productions',devis:'Demander un devis — Kobra’s Productions'};
-  var ACCENTS=[['Ultraviolet','#8b6dff'],['Braise','#ff5a3c'],['Or','#e2b04c'],['Venin','#a8f03a']];
+  var TITLES={accueil:'Kobra’s Productions',realisations:'Nos réalisations — Kobra’s Productions',teasers:'Teasers — Kobra’s Productions',services:'Nos services — Kobra’s Productions',tarifs:'Nos tarifs — Kobra’s Productions',univers:'Notre univers — Kobra’s Productions',devis:'Demander un devis — Kobra’s Productions'};
 
   function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
   function frame(h,extra){return '<div class="frame" style="--h:'+h+'">'+(extra||'')+'</div>'}
@@ -163,24 +162,45 @@
 
   document.addEventListener('keydown',function(e){if(e.key==='Escape'){ if(!legal.hidden) closeLegal(); else closeMenu(); }});
 
-  /* formulaire (simulé) */
-  var form=$('#form'), sent=$('#sent');
+  /* formulaire de devis : envoi réel par e-mail via Web3Forms */
+  var WEB3FORMS_KEY='COLLER_LA_CLE_ICI';
+  var CONTACT_MAIL='kobrasprod@gmail.com';
+  var MAIL_LINK='<a href="mailto:'+CONTACT_MAIL+'">'+CONTACT_MAIL+'</a>';
+  var form=$('#form'), sent=$('#sent'), formErr=$('#form-err'), submitBtn=$('button[type="submit"]',form);
+  function showFormError(html){formErr.innerHTML=html; formErr.hidden=false;}
+  function showSent(){form.hidden=true; sent.hidden=false; sent.scrollIntoView({block:'center'});}
   form.addEventListener('submit',function(e){
     e.preventDefault();
+    formErr.hidden=true;
     if(!form.checkValidity()){form.reportValidity();return;}
-    form.hidden=true; sent.hidden=false; sent.scrollIntoView({block:'center'});
+    if(form.elements['website'].value){showSent();return;} /* champ piège rempli : probablement un robot */
+    if(!WEB3FORMS_KEY||WEB3FORMS_KEY==='COLLER_LA_CLE_ICI'){
+      showFormError('L’envoi n’est pas encore activé. Écrivez-nous directement à '+MAIL_LINK+'.');return;
+    }
+    var type=(form.querySelector('input[name="type"]:checked')||{}).value||'Non précisé';
+    var etapes=$('#etape-all').checked?'A à Z (toutes les étapes)':
+      ($$('input[name="etape"]:checked',form).map(function(c){return c.value}).join(', ')||'Non précisé');
+    var payload={
+      access_key:WEB3FORMS_KEY,
+      subject:'Demande de devis — '+type,
+      from_name:'Site Kobra’s Productions',
+      name:form.elements['nom'].value,
+      email:form.elements['mail'].value,
+      'Type de projet':type,
+      'Étapes souhaitées':etapes,
+      'Budget indicatif':form.elements['budget'].value,
+      'Délai souhaité':form.elements['delai'].value||'Non précisé',
+      'Lien de référence':form.elements['ref'].value||'Aucun',
+      message:form.elements['message'].value
+    };
+    var label=submitBtn.textContent; submitBtn.disabled=true; submitBtn.textContent='Envoi en cours…';
+    fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)})
+      .then(function(r){return r.json().catch(function(){return {};}).then(function(j){return {ok:r.ok&&j.success===true};});})
+      .then(function(res){if(!res.ok) throw new Error('envoi refusé'); showSent();})
+      .catch(function(){showFormError('Votre demande n’a pas pu être envoyée. Réessayez dans un instant, ou écrivez-nous directement à '+MAIL_LINK+'.');})
+      .then(function(){submitBtn.disabled=false; submitBtn.textContent=label;});
   });
   $('#again').addEventListener('click',function(){form.reset();sent.hidden=true;form.hidden=false});
-
-  /* couleur d'accent à tester */
-  var sw=$('#swatches');
-  sw.innerHTML=ACCENTS.map(function(a,i){return '<button type="button" style="--c:'+a[1]+'" data-c="'+a[1]+'" aria-label="'+a[0]+'" title="'+a[0]+'" aria-pressed="'+(i===0)+'"></button>'}).join('');
-  sw.addEventListener('click',function(e){
-    var b=e.target.closest('button'); if(!b) return;
-    document.documentElement.style.setProperty('--accent',b.getAttribute('data-c'));
-    $$('button',sw).forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});
-  });
-  $('#mock-x').addEventListener('click',function(){$('#mock').hidden=true});
 
   /* ——— Hero : la lumière suit le pointeur, et dérive doucement au repos ——— */
   var hero=$('#hero'), glow=$('#glow'), cobra=$('#cobra'), beam=$('#beam');
