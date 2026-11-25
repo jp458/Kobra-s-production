@@ -1,0 +1,6 @@
+{
+  "name": "Kobra’s Productions",
+  "description": "Kobra’s Productions : clips musicaux, courts-métrages et bandes démo. Donnez du venin à vos idées.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

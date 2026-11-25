@@ -1,75 +1,20 @@
-# Kobra's Productions — site
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
+</div>
 
-Site statique (HTML/CSS/JS, sans build ni dépendance). Fonctionne tel quel sur
-n'importe quel hébergeur statique ; ce dépôt est prêt pour GitHub + Vercel.
+# Run and deploy your AI Studio app
 
-## Fichiers
+This contains everything you need to run your app locally.
 
-- `index.html` — toutes les pages (une seule page, navigation en JavaScript via `#/...`)
-- `style.css`, `app.js` — mise en forme et logique
-- `vercel.json` — en-têtes de sécurité (CSP, anti-clickjacking, etc.)
-- `robots.txt` — autorise l'indexation par les moteurs de recherche
+View your app in AI Studio: https://ai.studio/apps/a7077ccc-d456-4b03-bcd4-d69fb515a68b
 
-## Mettre en ligne (GitHub → Vercel, gratuit)
+## Run Locally
 
-1. Crée un nouveau dépôt sur GitHub et pousse ces fichiers :
-   ```
-   git init
-   git add .
-   git commit -m "Site Kobra's Productions"
-   git branch -M main
-   git remote add origin <URL_DU_DEPOT_GITHUB>
-   git push -u origin main
-   ```
-2. Sur [vercel.com](https://vercel.com), *Add New → Project*, choisis ce dépôt GitHub.
-3. Aucune configuration de build à indiquer (site statique) : laisse les champs
-   « Build Command » et « Output Directory » vides, Vercel sert les fichiers tels quels.
-4. Déploie. Vercel donne une adresse gratuite du type `kobras-productions.vercel.app`.
-5. Chaque `git push` sur `main` republie automatiquement le site.
+**Prerequisites:**  Node.js
 
-## Sécurité déjà en place
 
-- **CSP stricte** : aucun script externe, aucun script en ligne autorisé
-  (`script-src 'self'` seulement) — limite fortement les risques d'injection.
-- Miniatures YouTube chargées uniquement depuis `i.ytimg.com` / `img.youtube.com`,
-  seuls domaines externes autorisés pour les images.
-- `X-Frame-Options: DENY` et `frame-ancestors 'none'` : le site ne peut pas être
-  affiché dans un `<iframe>` sur un autre site (anti-clickjacking).
-- `Strict-Transport-Security` : force le HTTPS pour toutes les visites suivantes.
-- `Referrer-Policy` et `Permissions-Policy` restrictives, aucun tiers ne peut
-  activer caméra, micro ou géolocalisation depuis cette page.
-- Formulaire de devis : l'envoi passe par Web3Forms, seule destination externe
-  autorisée pour les requêtes (`connect-src` dans `vercel.json`). La clé Web3Forms est
-  visible dans le code par conception : un champ piège limite les robots, et on
-  pourra ajouter un captcha si du spam arrive.
-
-## Reste à faire avant mise en ligne définitive
-
-- Bandes démo, dès qu'elles seront montées
-- Activer l'envoi du formulaire (voir ci-dessous)
-
-## Ajouter un teaser
-
-Ouvrir `app.js`, repérer la liste `TEASERS` et ajouter une ligne :
-
-```
-{t:'Titre du projet', m:'Clip musical', when:'12 décembre', h:265, url:'https://youtu.be/XXXXXXXXXXX', id:'XXXXXXXXXXX'},
-```
-
-- `when` : date de sortie ou « Bientôt »
-- `url` : lien du teaser (YouTube, Instagram…), ou `null` s'il n'est pas encore prêt
-- `id` : identifiant YouTube, pour afficher la vraie miniature (`null` pour Instagram ou sans lien)
-- Les teasers s'affichent dans l'onglet Réalisations (filtre « Teasers »). Les trois premiers apparaissent aussi sur l'accueil, dans une section qui n'existe que s'il y a au moins un teaser.
-
-## Activer l'envoi du formulaire de devis
-
-1. Aller sur [web3forms.com](https://web3forms.com), saisir `kobrasprod@gmail.com` :
-   une clé d'accès est envoyée à cette adresse (la boîte de la cliente doit donc ouvrir
-   ce mail, ou transmettre la clé).
-2. Dans `app.js`, coller cette clé entre les guillemets de la ligne
-   `var WEB3FORMS_KEY='';` (c'est le seul endroit à modifier).
-3. Commit et push, puis envoyer une demande de test depuis le site en ligne et vérifier
-   qu'elle arrive bien sur `kobrasprod@gmail.com` (regarder aussi les spams).
-
-Tant que la clé n'est pas renseignée, le formulaire affiche un message invitant à écrire
-directement à l'adresse mail, et n'envoie rien.
+1. Install dependencies:
+   `npm install`
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
+   `npm run dev`
