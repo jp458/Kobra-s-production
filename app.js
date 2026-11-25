@@ -10,8 +10,21 @@
     {v:'Monter',h:340,t:'Montage, étalonnage et livraison dans les bons formats.',d:['Montage','Étalonnage','Livraison multi-formats']}
   ];
   var PRICES=[
-    {n:'Bande démo',p:'XX € — XX €'},{n:'Montage vidéo',p:'XX € — XX €'},{n:'Reel / contenu court',p:'XX € — XX €'},
-    {n:'Clip musical',p:'XX € — XX €'},{n:'Court-métrage',p:'XX € — XX €',x:'ou sur devis'}
+    {n:'Bande démo',p:'100 € – 450 €',
+     d:'Création d’un support audiovisuel destiné à présenter et valoriser l’identité, l’univers et les activités d’un artiste, d’une structure ou d’une entité. Durée indicative : 1 à 3 min.'},
+    {n:'Reel / Contenu court',p:'100 € – 350 €',
+     d:'Création de contenus audiovisuels courts destinés à dynamiser la communication digitale, promouvoir un projet, un événement ou une activité et favoriser l’engagement sur les plateformes numériques. Durée indicative : 15 à 90 secondes.'},
+    {n:'Court-métrage / Film court',compact:'3 formats · 300 € – 2 500 €',
+     d:['Durée entre 1 et 6 minutes.','Toute demande portant sur un film d’une durée supérieure fera l’objet d’une tarification adaptée, établie en fonction de la complexité du projet, du temps de production et des moyens nécessaires.'],
+     formats:[
+       {n:'Création de A à Z',sub:'De l’idée au film final',p:'800 à 2 500 €',all:true,
+        d:'Pour les artistes, associations ou structures qui souhaitent donner vie à une idée, une histoire ou un projet audiovisuel, sans nécessairement avoir déjà écrit ou préparé leur scénario.'},
+       {n:'Réalisation à partir de votre scénario',p:'700 à 1 500 €',
+        d:'Vous avez déjà écrit votre scénario et souhaitez le concrétiser en film ? KOBRAS Productions vous accompagne dans sa réalisation audiovisuelle, de la préparation du tournage à la finalisation du film.'},
+       {n:'Conception et écriture de scénario',p:'300 à 800 €',
+        d:'Vous avez une idée, une histoire ou un univers à raconter, mais vous souhaitez être accompagné dans sa construction et son écriture ? KOBRAS Productions vous accompagne dans le développement de votre idée et la rédaction de votre scénario.'}
+     ]},
+    {n:'Clip musical',soon:true}
   ];
   var STRIPS=[
     {k:'clip',t:'Clips musicaux',s:'Donner une image à un son.',h:265},
@@ -32,8 +45,9 @@
      role:'Production de A à Z — écriture scénario, tournage, cadrage, montage.',
      url:'https://youtu.be/5sUIpbPgv5M?si=SzDUcV2doapvWPv4', id:'5sUIpbPgv5M'}
   ];
-  var DEMO_SOON='Les bandes démo arrivent bientôt : les montages sont en cours.';
-  var TITLES={accueil:'Kobra’s Productions',realisations:'Nos réalisations — Kobra’s Productions',teasers:'Teasers — Kobra’s Productions',services:'Nos services — Kobra’s Productions',tarifs:'Nos tarifs — Kobra’s Productions',univers:'Notre univers — Kobra’s Productions',devis:'Demander un devis — Kobra’s Productions'};
+  var DEMO_SOON='';
+  var EMPTY_MSG={demo:'Les bandes démo arrivent bientôt : les montages sont en cours.',teaser:'Les premiers teasers arrivent bientôt.'};
+  var TITLES={accueil:'Kobra’s Productions',realisations:'Nos réalisations — Kobra’s Productions',services:'Nos services — Kobra’s Productions',tarifs:'Nos tarifs — Kobra’s Productions',univers:'Notre univers — Kobra’s Productions',devis:'Demander un devis — Kobra’s Productions'};
 
   function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
   function frame(h,extra){return '<div class="frame" style="--h:'+h+'">'+(extra||'')+'</div>'}
@@ -52,11 +66,23 @@
     }).join('');
   });
 
+  function descs(d){return [].concat(d||[]).map(function(x){return '<p class="p-desc">'+esc(x)+'</p>'}).join('')}
+  function cta(proj,all){return '<a class="textlink" href="#/devis" data-route="devis" data-project="'+esc(proj)+'"'+(all?' data-etapes="all"':'')+'>Demander ce devis</a>'}
+  function priceRow(p,compact){
+    if(p.soon) return '<div class="price soon reveal"><div class="p-main"><h3>'+esc(p.n)+'</h3></div><div class="amt">À venir…</div><span></span></div>';
+    if(compact) return '<div class="price reveal"><div class="p-main"><h3>'+esc(p.n)+'</h3></div><div class="amt">'+esc(p.compact||p.p)+'</div>'+cta(p.n)+'</div>';
+    if(p.formats){
+      return '<div class="price has-formats reveal"><div class="p-main"><h3>'+esc(p.n)+'</h3>'+descs(p.d)+'</div><ul class="formats">'+
+        p.formats.map(function(f){
+          return '<li><div class="p-main"><h4>'+esc(f.n)+(f.sub?'<span>'+esc(f.sub)+'</span>':'')+'</h4>'+descs(f.d)+'</div>'+
+            '<div class="amt"><small>Tarif indicatif</small>'+esc(f.p)+'</div>'+cta(p.n,f.all)+'</li>';
+        }).join('')+'</ul></div>';
+    }
+    return '<div class="price reveal"><div class="p-main"><h3>'+esc(p.n)+'</h3>'+descs(p.d)+'</div><div class="amt">'+esc(p.p)+'</div>'+cta(p.n)+'</div>';
+  }
   $$('[data-prices]').forEach(function(el){
-    el.innerHTML=PRICES.map(function(p){
-      return '<div class="price reveal"><h3>'+esc(p.n)+'</h3><div class="amt">'+p.p+(p.x?'<small>'+p.x+'</small>':'')+'</div>'+
-        '<a class="textlink" href="#/devis" data-route="devis" data-project="'+esc(p.n)+'">Demander ce devis</a></div>';
-    }).join('');
+    var compact=el.getAttribute('data-prices')==='compact';
+    el.innerHTML=PRICES.map(function(p){return priceRow(p,compact)}).join('');
   });
 
   $('#works').innerHTML=WORKS.map(function(w,i){
@@ -70,23 +96,21 @@
      t = titre, m = type de projet, when = date de sortie ou « Bientôt », h = teinte du cadre (0 à 360),
      url = lien du teaser (YouTube, Instagram…) ou null, id = identifiant YouTube pour la miniature ou null. */
   var TEASERS=[
-    {t:'Titre du projet',m:'Clip musical',when:'Bientôt',h:265,url:null,id:null},
-    {t:'Titre du projet',m:'Court-métrage',when:'Bientôt',h:20,url:null,id:null},
-    {t:'Titre du projet',m:'Projet à préciser',when:'Bientôt',h:200,url:null,id:null}
+    /* exemple : {t:'Titre du projet',m:'Clip musical',when:'12 décembre',h:265,url:'https://youtu.be/XXXXXXXXXXX',id:'XXXXXXXXXXX'}, */
   ];
   function teaserCard(w){
     var tag=w.url?'a':'div', open=w.url?('href="'+esc(w.url)+'" target="_blank" rel="noopener"'):'aria-disabled="true"';
     var thumb=w.id?'<img class="thumb" src="https://i.ytimg.com/vi/'+w.id+'/hqdefault.jpg" alt="Miniature : '+esc(w.t)+'" loading="lazy" decoding="async">':'';
-    return '<'+tag+' class="work reveal" '+open+'>'+
+    return '<'+tag+' class="work reveal" '+open+' data-cat="teaser">'+
       frame(w.h, thumb+'<span class="badge">'+esc(w.when||'Bientôt')+'</span><span class="ph">'+(w.url?'Voir le teaser':'Teaser à venir')+'</span><span class="play"></span>')+
       '<h3>'+esc(w.t)+'</h3><p>'+esc(w.m)+'</p></'+tag+'>';
   }
-  var NO_TEASER='<p class="note">Les premiers teasers arrivent bientôt.</p>';
-  $('#teasers').innerHTML=TEASERS.map(teaserCard).join('')||NO_TEASER;
-  $('#teasers-home').innerHTML=TEASERS.slice(0,3).map(teaserCard).join('')||NO_TEASER;
+  $('#works .demo-empty').insertAdjacentHTML('beforebegin',TEASERS.map(teaserCard).join(''));
+  $('#teasers-home').innerHTML=TEASERS.slice(0,3).map(teaserCard).join('');
+  $('#teasers-sec').hidden=!TEASERS.length;
   $$('.thumb').forEach(function(img){img.addEventListener('error',function(){img.remove()})});
 
-  var TYPES=['Clip musical','Court-métrage','Bande démo','Montage vidéo','Reel / contenu court','Autres'];
+  var TYPES=['Bande démo','Reel / Contenu court','Court-métrage / Film court','Clip musical (à venir)','Autres'];
   $('#types').innerHTML=TYPES.map(function(t){return '<label class="chip"><input type="radio" name="type" value="'+esc(t)+'"><span>'+esc(t)+'</span></label>'}).join('');
   $('#etapes').innerHTML=STEPS.map(function(s){return '<label class="chip"><input type="checkbox" name="etape" value="'+s.v+'"><span>'+s.v+'</span></label>'}).join('')+
     '<label class="chip chip-all"><input type="checkbox" id="etape-all"><span>A à Z (toutes les étapes)</span></label>';
@@ -100,12 +124,13 @@
   function setFilter(f){
     $$('.filters button').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-filter')===f))});
     var shown=0;
-    $$('.work').forEach(function(w){var on=(f==='all'||w.getAttribute('data-cat')===f); w.hidden=!on; if(on) shown++;});
-    $('.demo-empty').hidden = shown>0;
+    $$('#works .work').forEach(function(w){var on=(f==='all'||w.getAttribute('data-cat')===f); w.hidden=!on; if(on) shown++;});
+    var n=$('.demo-empty'); n.textContent=EMPTY_MSG[f]||''; n.hidden=shown>0;
   }
-  function preselect(name){
-    var m={'Bande démo':'Bande démo','Montage vidéo':'Montage vidéo','Reel / contenu court':'Reel / contenu court','Clip musical':'Clip musical','Court-métrage':'Court-métrage'};
-    $$('input[name="type"]').forEach(function(i){i.checked=(i.value===m[name])});
+  function preselect(name,etapes){
+    $$('input[name="type"]').forEach(function(i){i.checked=(i.value===name)});
+    var all=$('#etape-all'); all.checked=(etapes==='all');
+    $$('input[name="etape"]').forEach(function(c){c.checked=all.checked; c.disabled=all.checked;});
   }
   function go(name,o){
     o=o||{};
@@ -120,7 +145,7 @@
     });
     current=name; document.title=TITLES[name];
     if(name==='realisations') setFilter(o.filter||'all');
-    if(name==='devis' && o.project) preselect(o.project);
+    if(name==='devis' && o.project) preselect(o.project,o.etapes);
     closeMenu(); window.scrollTo(0,0); requestAnimationFrame(updateProgress);
     if(name==='accueil'){ startHeroIdle(); } else { pauseHeroIdle(0); }
     try{ history.replaceState(null,'','#/'+(name==='accueil'?'':name)); }catch(e){}
@@ -139,7 +164,7 @@
 
   document.addEventListener('click',function(e){
     var a=e.target.closest('[data-route]'); if(!a) return;
-    e.preventDefault(); go(a.getAttribute('data-route'),{filter:a.getAttribute('data-filter'),project:a.getAttribute('data-project')});
+    e.preventDefault(); go(a.getAttribute('data-route'),{filter:a.getAttribute('data-filter'),project:a.getAttribute('data-project'),etapes:a.getAttribute('data-etapes')});
   });
   $$('.filters button').forEach(function(b){b.addEventListener('click',function(){setFilter(b.getAttribute('data-filter'))})});
 
@@ -163,7 +188,7 @@
   document.addEventListener('keydown',function(e){if(e.key==='Escape'){ if(!legal.hidden) closeLegal(); else closeMenu(); }});
 
   /* formulaire de devis : envoi réel par e-mail via Web3Forms */
-  var WEB3FORMS_KEY='COLLER_LA_CLE_ICI';
+  var WEB3FORMS_KEY=''; /* coller ici la clé Web3Forms, entre les guillemets */
   var CONTACT_MAIL='kobrasprod@gmail.com';
   var MAIL_LINK='<a href="mailto:'+CONTACT_MAIL+'">'+CONTACT_MAIL+'</a>';
   var form=$('#form'), sent=$('#sent'), formErr=$('#form-err'), submitBtn=$('button[type="submit"]',form);
@@ -174,7 +199,7 @@
     formErr.hidden=true;
     if(!form.checkValidity()){form.reportValidity();return;}
     if(form.elements['website'].value){showSent();return;} /* champ piège rempli : probablement un robot */
-    if(!WEB3FORMS_KEY||WEB3FORMS_KEY==='COLLER_LA_CLE_ICI'){
+    if(!WEB3FORMS_KEY){
       showFormError('L’envoi n’est pas encore activé. Écrivez-nous directement à '+MAIL_LINK+'.');return;
     }
     var type=(form.querySelector('input[name="type"]:checked')||{}).value||'Non précisé';

@@ -263,3 +263,21 @@ h1 .ln>span{display:block}
   *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}
   .reveal{opacity:1!important;transform:none!important}
 }
+
+/* ——— Tarifs détaillés ——— */
+.price{align-items:start}
+.p-main h3{margin:0}
+.p-desc{margin:10px 0 0;max-width:62ch;color:var(--muted);font-size:.95rem}
+.p-main h4{margin:0;font:700 clamp(1.1rem,2vw,1.4rem)/1.2 var(--display);letter-spacing:-.02em}
+.p-main h4 span{display:block;margin-top:4px;font:400 .95rem var(--sans);letter-spacing:0;color:var(--muted)}
+.price .amt small.tarif-label,.formats .amt small{display:block;margin:0 0 4px;font:400 .78rem var(--sans);color:var(--muted)}
+.price.has-formats{grid-template-columns:1fr}
+.formats{list-style:none;margin:8px 0 0;padding:0}
+.formats li{display:grid;grid-template-columns:1.4fr 1fr auto;gap:20px;align-items:start;padding:22px 0;border-top:1px solid var(--line)}
+.price.soon .p-main h3,.price.soon .amt{color:var(--dim)}
+.works .demo-empty{grid-column:1/-1}
+@media (max-width:900px){
+  .formats li{grid-template-columns:1fr auto;row-gap:8px}
+  .formats li .amt{grid-column:1}
+  .formats li .textlink{grid-column:2;grid-row:1}
+}

@@ -45,7 +45,6 @@ n'importe quel hébergeur statique ; ce dépôt est prêt pour GitHub + Vercel.
 
 ## Reste à faire avant mise en ligne définitive
 
-- Tarifs réels (actuellement `XX €`)
 - Bandes démo, dès qu'elles seront montées
 - Activer l'envoi du formulaire (voir ci-dessous)
 
@@ -60,15 +59,15 @@ Ouvrir `app.js`, repérer la liste `TEASERS` et ajouter une ligne :
 - `when` : date de sortie ou « Bientôt »
 - `url` : lien du teaser (YouTube, Instagram…), ou `null` s'il n'est pas encore prêt
 - `id` : identifiant YouTube, pour afficher la vraie miniature (`null` pour Instagram ou sans lien)
-- Les trois premiers teasers apparaissent aussi sur l'accueil.
+- Les teasers s'affichent dans l'onglet Réalisations (filtre « Teasers »). Les trois premiers apparaissent aussi sur l'accueil, dans une section qui n'existe que s'il y a au moins un teaser.
 
 ## Activer l'envoi du formulaire de devis
 
 1. Aller sur [web3forms.com](https://web3forms.com), saisir `kobrasprod@gmail.com` :
    une clé d'accès est envoyée à cette adresse (la boîte de la cliente doit donc ouvrir
    ce mail, ou transmettre la clé).
-2. Dans `app.js`, remplacer `COLLER_LA_CLE_ICI` par cette clé (une seule occurrence à
-   modifier : la ligne `var WEB3FORMS_KEY=...`).
+2. Dans `app.js`, coller cette clé entre les guillemets de la ligne
+   `var WEB3FORMS_KEY='';` (c'est le seul endroit à modifier).
 3. Commit et push, puis envoyer une demande de test depuis le site en ligne et vérifier
    qu'elle arrive bien sur `kobrasprod@gmail.com` (regarder aussi les spams).
 

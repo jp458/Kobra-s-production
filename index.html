@@ -34,7 +34,6 @@
     <nav class="links" id="links" aria-label="Navigation principale">
       <a class="only-mobile" href="#/" data-route="accueil">Accueil</a>
       <a href="#/realisations" data-route="realisations">Réalisations</a>
-      <a href="#/teasers" data-route="teasers">Teasers</a>
       <a href="#/services" data-route="services">Services</a>
       <a href="#/tarifs" data-route="tarifs">Tarifs</a>
       <a href="#/univers" data-route="univers">Notre univers</a>
@@ -81,10 +80,10 @@
     <div class="strips" id="strips"></div>
   </section>
 
-  <section class="sec" aria-labelledby="h-teas" style="padding-top:0">
+  <section class="sec" id="teasers-sec" aria-labelledby="h-teas" style="padding-top:0">
     <div class="wrap sec-head">
       <h2 id="h-teas" class="reveal">Teasers</h2>
-      <a class="textlink" href="#/teasers" data-route="teasers">Tout voir</a>
+      <a class="textlink" href="#/realisations" data-route="realisations" data-filter="teaser">Tout voir</a>
     </div>
     <div class="wrap"><div class="works three" id="teasers-home"></div></div>
   </section>
@@ -104,7 +103,7 @@
   <section class="sec" aria-labelledby="h-tar" style="padding-top:0">
     <div class="wrap">
       <div class="sec-head"><h2 id="h-tar" class="reveal">Nos tarifs</h2></div>
-      <div class="prices" data-prices></div>
+      <div class="prices" data-prices="compact"></div>
       <blockquote class="quote">
         <strong>Votre projet. Vos besoins. Votre budget.</strong>
         <span>Choisissez les étapes dont vous avez besoin.</span>
@@ -132,7 +131,7 @@
 <div class="page" data-page="realisations" hidden>
   <header class="phead"><div class="wrap">
     <h1><span class="ln"><span>Nos réalisations</span></span></h1>
-    <p>Clips musicaux, courts-métrages et bandes démo. Ouvrez un projet pour le voir en plein écran.</p>
+    <p>Clips musicaux, courts-métrages, bandes démo et teasers promotionnels. Ouvrez un projet pour le voir sur YouTube.</p>
   </div></header>
   <section class="wrap" style="padding-bottom:clamp(64px,9vw,140px)">
     <div class="filters" role="group" aria-label="Filtrer par type">
@@ -140,21 +139,10 @@
       <button data-filter="clip" aria-pressed="false">Clips musicaux</button>
       <button data-filter="court" aria-pressed="false">Courts-métrages</button>
       <button data-filter="demo" aria-pressed="false">Bandes démo</button>
+      <button data-filter="teaser" aria-pressed="false">Teasers</button>
     </div>
     <div class="works" id="works"></div>
-    <p class="note">Les cadres avec lien s’ouvrent directement sur YouTube en un geste. Les bandes démo suivront dès que les montages seront prêts.</p>
-  </section>
-</div>
-
-<!-- ═════════ TEASERS ═════════ -->
-<div class="page" data-page="teasers" hidden>
-  <header class="phead"><div class="wrap">
-    <h1><span class="ln"><span>Teasers</span></span></h1>
-    <p>Un avant-goût des projets à venir. Cliquez sur un teaser pour le voir.</p>
-  </div></header>
-  <section class="wrap" style="padding-bottom:clamp(64px,9vw,140px)">
-    <div class="works three" id="teasers"></div>
-    <p class="note">Emplacements provisoires : chaque teaser s’ouvrira directement sur sa vidéo, avec sa date de sortie.</p>
+    <p class="note">Les cadres avec lien s’ouvrent directement sur YouTube en un geste. Les bandes démo et les teasers suivront dès que les montages seront prêts.</p>
   </section>
 </div>
 
@@ -167,7 +155,7 @@
   <section style="padding-bottom:clamp(64px,9vw,140px)">
     <div class="film"><div class="wrap"><div class="film-row" data-steps="detail"></div></div></div>
     <div class="wrap after-film">
-      <p>Un clip déjà tourné qui attend son montage ? Un scénario à écrire sans le tourner ? Composez votre projet.</p>
+      <p>Un scénario à écrire sans le tourner ? Une idée à porter jusqu’au film final ? Composez votre projet.</p>
       <a class="btn btn-solid" href="#/devis" data-route="devis">Demander un devis</a>
     </div>
   </section>
@@ -177,7 +165,7 @@
 <div class="page" data-page="tarifs" hidden>
   <header class="phead"><div class="wrap">
     <h1><span class="ln"><span>Nos tarifs</span></span></h1>
-    <p>Une base par prestation. Le prix final dépend des étapes que vous choisissez.</p>
+    <p>Une base par prestation. Le prix final dépend des étapes que vous choisissez. Chaque projet étant unique, le tarif définitif est établi sur devis, en fonction de sa complexité, de ses besoins artistiques, techniques et humains.</p>
   </div></header>
   <section class="wrap" style="padding-bottom:clamp(64px,9vw,140px)">
     <div class="prices" data-prices></div>
@@ -186,7 +174,6 @@
       <span>Choisissez les étapes dont vous avez besoin.</span>
       <a class="textlink" href="#/devis" data-route="devis">Demander un devis</a>
     </blockquote>
-    <p class="note">Montants provisoires (XX €) : à remplacer par les vrais tarifs.</p>
   </section>
 </div>
 
@@ -262,7 +249,6 @@
     <svg class="logo" viewBox="106 99 7470 3306" role="img" aria-label="Kobra’s Productions"><use href="#p-logo"/></svg>
     <ul aria-label="Pages">
       <li><a href="#/realisations" data-route="realisations">Réalisations</a></li>
-      <li><a href="#/teasers" data-route="teasers">Teasers</a></li>
       <li><a href="#/services" data-route="services">Services</a></li>
       <li><a href="#/tarifs" data-route="tarifs">Tarifs</a></li>
       <li><a href="#/univers" data-route="univers">Notre univers</a></li>
